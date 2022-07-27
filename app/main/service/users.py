@@ -1,17 +1,57 @@
 from app.main import db, create_app
-from flask import request, jsonify, redirect
-from flask_restx import Resource, fields, marshal
-import json ,io, jwt, os
-from sqlalchemy.sql import text
-from sqlalchemy import and_ 
-from app.main import db
-from app.main.model.users import Users
-from ..config import jwt_key, jwt_alg, MAIL_SENDER, MAIL_SENDER_PASSWORD
-from string import punctuation, ascii_letters, digits
-import random
-from flask_mail import Message, Mail
-import flask_bcrypt
+#from flask import request, jsonify, redirect
+#from flask_restx import Resource, fields, marshal
+#import json ,io, jwt, os
+#from sqlalchemy.sql import text
+#from sqlalchemy import and_ 
+#from app.main import db
+from app.main.model.users import User
+#from ..config import jwt_key, jwt_alg, MAIL_SENDER, MAIL_SENDER_PASSWORD
+#from string import punctuation, ascii_letters, digits
+#import random
+#from flask_mail import Message, Mail
+#import flask_bcrypt
 
+
+
+
+def save_new_user(data): 
+    user = User.query.filter_by(email=data['email']).first()
+    if not user:
+        new_user = User(
+            email=data['email'],
+            username=data['username'],
+            password=data['password'],
+        )
+        save_changes(new_user)
+        response_object = {
+            'status': 'success',
+            'message': '회원가입 되었습니다. '
+        }
+        return response_object, 201
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': '이미 가입된 회원입니다.',
+        }# 체를 JSON으로 포맷 하기 위해 jsonify 를 사용할 필요가 없습니다 . Flask-restplus가 자동으로 수행합니다.
+        return response_object, 409
+ 
+ 
+ 
+def get_all_users():
+    return User.query.all()
+ 
+ 
+def get_a_user(id):
+    return User.query.filter_by(id=id).first()
+ 
+ 
+def save_changes(data):
+    db.session.add(data)
+    db.session.commit() 
+
+
+"""
 app = create_app('dev') #배포시에도 dev
 
 app.config.update(dict(
@@ -29,7 +69,7 @@ mail = Mail(app)
 
 
 def post_signup(data):
-  """Post Sign up"""
+  #Post Sign up
   try:
     try:
       full_name = data['full_name']
@@ -89,7 +129,7 @@ def send_password(send, receive, data):
         pass
 
 def get_find_user(data):
-  """Get Find User API"""
+  #Get Find User API
   try:
     try:
       email = data['email']
@@ -131,7 +171,7 @@ def get_find_user(data):
       return response_object, 500
 
 def get_email_check(data):
-  """get Email Check API"""
+  #get Email Check API
   try:
     try:
       email = data['email']
@@ -170,7 +210,7 @@ def get_email_check(data):
     return response_object, 500
       
 def get_find_id(data):
-  """Get Find ID API"""
+  #Get Find ID API
   try:
     print(data)
     try:
@@ -220,7 +260,7 @@ def get_find_id(data):
       return response_object, 500
 
 def edit_temp_pw(data):
-  """Edit to temporary password"""
+  #Edit to temporary password
   try:
     try:
       user_id = data['id']
@@ -254,7 +294,7 @@ def edit_temp_pw(data):
       return response_object, 500  
 
 def post_login(data):
-  """Post Login"""
+  #Post Login
   try:
     try:
       email = data['email']
@@ -302,7 +342,7 @@ def post_login(data):
       return response_object, 500
     
 def post_logout(data):
-  """Post Logout"""
+  #Post Logout
   try:
     try:
       token = request.headers.get('Authorization')
@@ -400,7 +440,7 @@ def social_signin(data):
       return response_object, 500 
 
 def get_user_info():
-  """Get User Info"""
+  #Get User Info
   try:
     try:
       token = request.headers.get('Authorization')
@@ -436,7 +476,7 @@ def get_user_info():
 
 
 def edit_user_info(data):
-  """Edit User Info API"""
+  #Edit User Info API
   try:  
     try:
       token = request.headers.get('Authorization')
@@ -482,7 +522,7 @@ def edit_user_info(data):
     return response_object, 500
 
 def get_first_loading():
-  """Check Server is Ready"""
+  #Check Server is Ready
   try:
     user_info = Users.query.all()
     response_object = {
@@ -496,3 +536,4 @@ def get_first_loading():
       'message': 'Some Internal Server Error occurred.',
     }
     return response_object, 500
+"""

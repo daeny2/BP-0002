@@ -1,3 +1,17 @@
+
+from flask_restx import Namespace, fields
+ 
+ 
+class UserDto:
+    api = Namespace('user', description='user related operations')
+    user = api.model('user', {
+        'email': fields.String(required=True, description='user email address'),
+        'username': fields.String(required=True, description='user username'),
+        'password': fields.String(required=True, description='user password'),
+    })
+
+
+"""
 #dto는 data transfer object로 데이터를 전달하는 기능을 합니다.
 from flask_restx import Namespace, fields
 
@@ -42,3 +56,4 @@ class Schedules_commonDto:
     'cycle': fields.Integer(required=True, description='Alarm cycle'),
   })
 
+"""
