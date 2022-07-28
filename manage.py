@@ -28,7 +28,7 @@ def run():
 @manager.command
 def test():
 
-    my_users = users.Users(full_name='Grace', email='hjngy0511@gmail.com', password='qwerty12345', mobile='010-1234-5678', login='basic')
+    my_users = users.Users(full_name='Testing', email='sample@gmail.com', password='test@2022', mobile='010-1234-5678', login='basic')
     db.session.add(my_users)
     db.session.commit()
 
