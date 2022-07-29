@@ -9,7 +9,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
 	SECRET_KEY = os.getenv('SECRET_KEY', 'ngle_api_tongchun')
 	DEBUG = False
-
+	jwt_key = "1"
+	jwt_alg = "1"
+	MAIL_SENDER = "1"
+	MAIL_SENDER_PASSWORD = "1"
 
 class DevelopmentConfig(Config):
 	# uncomment the line below to use postgres
